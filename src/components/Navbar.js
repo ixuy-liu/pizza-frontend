@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   const userType = localStorage.getItem('userType'); // "admin" or "customer  "
-  const token = localStorage.getItem('token');
+  
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -36,7 +36,7 @@ function Navbar() {
               <Link className="nav-link" to="/order">Order</Link>
             </li>
 
-            {token && userType === 'admin' && (
+            {userType === 'admin' && (
               <li className="nav-item">
                 <Link className="nav-link" to="/admin/add-pizza">Add Pizza</Link>
               </li>
