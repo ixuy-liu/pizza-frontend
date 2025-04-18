@@ -53,7 +53,7 @@ function Menu() {
     fetch('http://localhost:5050/api/pizzas')
       .then(res => res.json())
       .then(data => {
-        setPizzaData([...localPizzas, ...data]); // 👈 combine local and backend
+        setPizzaData(data); // ✅ only show backend pizzas
       })
       .catch(err => {
         console.error('Failed to load pizzas from backend:', err);

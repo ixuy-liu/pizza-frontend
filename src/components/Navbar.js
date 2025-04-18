@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Navbar() {
-  const userType = localStorage.getItem('userType'); // "admin" or "customer  "
-  
+  const [userType, setUserType] = useState(null);
+
+  useEffect(() => {
+    const storedType = localStorage.getItem('userType');
+    setUserType(storedType);
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -37,9 +41,14 @@ function Navbar() {
             </li>
 
             {userType === 'admin' && (
+              <>
               <li className="nav-item">
                 <Link className="nav-link" to="/admin/add-pizza">Add Pizza</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/admin/orders">View Orders</Link>
+              </li>
+            </>
             )}
 
             <li className="nav-item">

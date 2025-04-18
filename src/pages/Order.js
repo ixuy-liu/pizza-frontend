@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// function Order() {
-//   return (
-//     <div>
-//       <h2>Order Summary</h2>
-//       <p>This page will display the user's selected pizzas and allow them to place the order.</p>
-//       <p>Feature to implement: cart items, quantities, total price, and checkout form.</p>
-//     </div>
-//   );
-// }
-
 function Order() {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
