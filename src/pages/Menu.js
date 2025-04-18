@@ -16,8 +16,7 @@ import {
   MenuItem,
   Snackbar,
   Pagination,
-  Alert,      
-  useTheme, 
+  Alert
 } from '@mui/material';
 
 const localPizzas = [
@@ -47,12 +46,9 @@ const categoryBackgrounds = {
   'All': '#ffffff',
 };
 
-
 export default function Menu() {
-  const theme = useTheme();
   const [pizzaData, setPizzaData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('lowToHigh');
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
@@ -76,7 +72,6 @@ export default function Menu() {
       })
       .catch(err => {
         console.error(err);
-        setError('Could not load online menu – showing local items only.');
         setPizzaData(localPizzas);
       })
       .finally(() => setLoading(false));
@@ -218,4 +213,3 @@ export default function Menu() {
     </Container>
   );
 }
-
