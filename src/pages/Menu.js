@@ -1,4 +1,3 @@
-// src/pages/Menu.js
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -10,7 +9,6 @@ import {
   CardActions,
   Button,
   CircularProgress,
-  Alert,
   TextField,
   FormControl,
   InputLabel,
@@ -18,18 +16,37 @@ import {
   MenuItem,
   Snackbar,
   Pagination,
-  useTheme,
+  Alert,      
+  useTheme, 
 } from '@mui/material';
 
-// Local fallback pizzas
 const localPizzas = [
-  { _id: 'local-1', name: 'Margherita', description: 'Mozzarella, tomato, basil.', price: 9.99, image: '/images/margherita.jpg' },
-  { _id: 'local-2', name: 'Pepperoni', description: 'Spicy pepperoni slices.', price: 11.49, image: '/images/pepperoni.jpg' },
-  { _id: 'local-3', name: 'BBQ Chicken', description: 'Sweet BBQ sauce & grilled chicken.', price: 12.99, image: '/images/bbq-chicken.jpg' },
-  { _id: 'local-4', name: 'Veggie', description: 'Bell peppers, olives, onions, mushrooms.', price: 10.99, image: '/images/veggie.jpg' },
-  { _id: 'local-5', name: 'Hawaiian', description: 'Ham & pineapple on cheese.', price: 11.99, image: '/images/hawaiian.jpg' },
-  { _id: 'local-6', name: 'Meat Lovers', description: 'Sausage, bacon, pepperoni, beef.', price: 13.49, image: '/images/meatlovers.jpg' },
+  { _id: 'local-1', name: 'Margherita', description: 'Mozzarella, tomato, basil.', price: 9.99, image: '/images/margherita.jpg', category: 'Classics' },
+  { _id: 'local-2', name: 'Pepperoni', description: 'Spicy pepperoni slices.', price: 11.49, image: '/images/pepperoni.jpg', category: 'Classics' },
+  { _id: 'local-3', name: 'BBQ Chicken', description: 'Sweet BBQ sauce & grilled chicken.', price: 12.99, image: '/images/bbq-chicken.jpg', category: 'Meat Lovers' },
+  { _id: 'local-4', name: 'Veggie', description: 'Bell peppers, olives, onions, mushrooms.', price: 10.99, image: '/images/veggie.jpg', category: 'Veggie & Vegan' },
+  { _id: 'local-5', name: 'Hawaiian', description: 'Ham & pineapple on cheese.', price: 11.99, image: '/images/hawaiian.jpg', category: 'Specials & Seasonal' },
+  { _id: 'local-6', name: 'Meat Lovers', description: 'Sausage, bacon, pepperoni, beef.', price: 13.49, image: '/images/meatlovers.jpg', category: 'Meat Lovers' },
+  { _id: 'local-7', name: 'Four Cheese', description: 'Blend of mozzarella, cheddar, parmesan, and gorgonzola.', price: 12.49, image: '/images/5-1.jpg', category: 'Classics' },
+  { _id: 'local-8', name: 'Meat Lovers Special', description: 'Combination of sausage, bacon, pepperoni, and beef.', price: 13.49, image: '/images/6.jpg', category: 'Meat Lovers' },
+  { _id: 'local-9', name: 'BBQ Chicken Deluxe', description: 'Sweet BBQ sauce and grilled chicken.', price: 12.99, image: '/images/7.jpg', category: 'Meat Lovers' },
+  { _id: 'local-10', name: 'Sausage & Bacon Feast', description: 'Sausage and crispy bacon.', price: 12.49, image: '/images/8.jpg', category: 'Meat Lovers' },
+  { _id: 'local-11', name: 'Veggie Supreme', description: 'Bell peppers, onions, mushrooms, and olives.', price: 10.99, image: '/images/10-1.jpg', category: 'Veggie & Vegan' },
+  { _id: 'local-12', name: 'Spinach & Feta', description: 'Spinach and feta cheese combination.', price: 11.49, image: '/images/11.jpg', category: 'Veggie & Vegan' },
+  { _id: 'local-13', name: 'Vegan Delight', description: 'Plant-based cheese and veggie toppings.', price: 11.99, image: '/images/12.jpg', category: 'Veggie & Vegan' },
+  { _id: 'local-14', name: 'Truffle Mushroom', description: 'Fragrant truffle oil and mushroom blend.', price: 14.99, image: '/images/13.jpg', category: 'Specials & Seasonal' },
+  { _id: 'local-15', name: 'Pumpkin Spice', description: 'Autumn special with pumpkin flavors.', price: 13.99, image: '/images/14.jpg', category: 'Specials & Seasonal' },
+  { _id: 'local-16', name: 'Seafood Marinara', description: 'Seafood with marinara sauce.', price: 15.99, image: '/images/15.jpg', category: 'Specials & Seasonal' },
 ];
+
+const categoryBackgrounds = {
+  'Classics': '#f8f9fa',
+  'Meat Lovers': '#f0f5f1',
+  'Veggie & Vegan': '#f7f4ef',
+  'Specials & Seasonal': '#f3f0f7',
+  'All': '#ffffff',
+};
+
 
 export default function Menu() {
   const theme = useTheme();
@@ -40,6 +57,7 @@ export default function Menu() {
   const [sortOrder, setSortOrder] = useState('lowToHigh');
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [page, setPage] = useState(1);
+  const [activeCategory, setActiveCategory] = useState('All');
 
   const perPage = 6;
 
@@ -49,7 +67,13 @@ export default function Menu() {
         if (!res.ok) throw new Error(`Status ${res.status}`);
         return res.json();
       })
-      .then(data => setPizzaData([...localPizzas, ...data]))
+      .then(data => {
+        const updatedData = data.map(pizza => ({
+          ...pizza,
+          category: pizza.category || 'Other',
+        }));
+        setPizzaData([...localPizzas, ...updatedData]);
+      })
       .catch(err => {
         console.error(err);
         setError('Could not load online menu – showing local items only.');
@@ -69,15 +93,16 @@ export default function Menu() {
 
   const handleCloseSnackbar = () => setSnackbar(s => ({ ...s, open: false }));
 
-  // Filter & sort
+  const categories = ['All', ...Array.from(new Set(localPizzas.map(p => p.category)))];
+  const backgroundColor = categoryBackgrounds[activeCategory] || '#ffffff';
+
   const filtered = pizzaData.filter(p =>
+    (activeCategory === 'All' || p.category === activeCategory) &&
     p.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
   const sorted = filtered.sort((a, b) =>
     sortOrder === 'lowToHigh' ? a.price - b.price : b.price - a.price
   );
-
-  // Pagination
   const pageCount = Math.ceil(sorted.length / perPage);
   const paged = sorted.slice((page - 1) * perPage, page * perPage);
 
@@ -90,12 +115,10 @@ export default function Menu() {
   }
 
   return (
-    <Container sx={{ py: 4, backgroundColor: theme.palette.background.default }}>
-      <Typography variant="h4" gutterBottom>Our Menu</Typography>
-      {error && <Alert severity="warning" sx={{ mb: 2 }}>{error}</Alert>}
+    <Container sx={{ py: 4, backgroundColor: backgroundColor, minHeight: '100vh' }}>
+      <Typography variant="h4" gutterBottom align="center">Our Menu</Typography>
 
-      {/* Search & Sort Controls */}
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3, alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3, justifyContent: 'center' }}>
         <TextField
           label="Search pizzas"
           variant="outlined"
@@ -117,7 +140,18 @@ export default function Menu() {
         </FormControl>
       </Box>
 
-      {/* Pizza Grid */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap', mb: 4 }}>
+        {categories.map(cat => (
+          <Button
+            key={cat}
+            variant={activeCategory === cat ? 'contained' : 'outlined'}
+            onClick={() => { setActiveCategory(cat); setPage(1); }}
+          >
+            {cat}
+          </Button>
+        ))}
+      </Box>
+
       <Grid container spacing={4}>
         {paged.map(pizza => (
           <Grid item key={pizza._id} xs={12} sm={6} md={4}>
@@ -136,11 +170,7 @@ export default function Menu() {
               <Box
                 sx={{
                   height: 200,
-                  backgroundImage: `url(${
-                    pizza.image.startsWith('/images')
-                      ? pizza.image
-                      : `http://localhost:5050${pizza.image}`
-                  })`,
+                  backgroundImage: `url(${pizza.image.startsWith('/images') ? pizza.image : `http://localhost:5050${pizza.image}`})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                 }}
@@ -164,7 +194,6 @@ export default function Menu() {
         ))}
       </Grid>
 
-      {/* Pagination controls */}
       {pageCount > 1 && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
           <Pagination
@@ -176,7 +205,6 @@ export default function Menu() {
         </Box>
       )}
 
-      {/* Snackbar feedback */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -190,3 +218,4 @@ export default function Menu() {
     </Container>
   );
 }
+
