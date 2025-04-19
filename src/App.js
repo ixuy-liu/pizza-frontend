@@ -10,6 +10,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import AddPizza from './pages/AddPizza';
+import AdminOrders from './pages/AdminOrders';
+
 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin/add-pizza" element={<AddPizza />} />
+          <Route path="/admin/orders" element={<AdminOrders />} />
         </Routes>
       </div>
     </Router>

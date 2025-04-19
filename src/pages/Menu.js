@@ -64,11 +64,15 @@ export default function Menu() {
         return res.json();
       })
       .then(data => {
+<<<<<<< HEAD
+        setPizzaData(data); // ✅ only show backend pizzas
+=======
         const updatedData = data.map(pizza => ({
           ...pizza,
           category: pizza.category || 'Other',
         }));
         setPizzaData([...localPizzas, ...updatedData]);
+>>>>>>> b02b34ec60586f79b2c1f15d5099a70980d1eae7
       })
       .catch(err => {
         console.error(err);
