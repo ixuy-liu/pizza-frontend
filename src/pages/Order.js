@@ -20,11 +20,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-<<<<<<< HEAD
-function Order() {
-=======
 export default function Order() {
->>>>>>> b02b34ec60586f79b2c1f15d5099a70980d1eae7
+
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });

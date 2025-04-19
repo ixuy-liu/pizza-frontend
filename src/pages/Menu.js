@@ -18,6 +18,7 @@ import {
   Pagination,
   Alert
 } from '@mui/material';
+import Likebutton from './Likebutton'; // Make sure the Likebutton is imported
 
 const localPizzas = [
   { _id: 'local-1', name: 'Margherita', description: 'Mozzarella, tomato, basil.', price: 9.99, image: '/images/margherita.jpg', category: 'Classics' },
@@ -37,6 +38,8 @@ const localPizzas = [
   { _id: 'local-15', name: 'Pumpkin Spice', description: 'Autumn special with pumpkin flavors.', price: 13.99, image: '/images/14.jpg', category: 'Specials & Seasonal' },
   { _id: 'local-16', name: 'Seafood Marinara', description: 'Seafood with marinara sauce.', price: 15.99, image: '/images/15.jpg', category: 'Specials & Seasonal' },
 ];
+
+
 
 const categoryBackgrounds = {
   'Classics': '#f8f9fa',
@@ -64,15 +67,12 @@ export default function Menu() {
         return res.json();
       })
       .then(data => {
-<<<<<<< HEAD
-        setPizzaData(data); // ✅ only show backend pizzas
-=======
+        setPizzaData(data);
         const updatedData = data.map(pizza => ({
           ...pizza,
           category: pizza.category || 'Other',
         }));
         setPizzaData([...localPizzas, ...updatedData]);
->>>>>>> b02b34ec60586f79b2c1f15d5099a70980d1eae7
       })
       .catch(err => {
         console.error(err);
@@ -183,10 +183,11 @@ export default function Menu() {
                   ${pizza.price.toFixed(2)}
                 </Typography>
               </CardContent>
-              <CardActions>
+              <CardActions sx={{ display: 'flex', gap: 1 }}>
                 <Button fullWidth variant="contained" onClick={() => handleAddToCart(pizza)}>
                   Add to Order
                 </Button>
+                <Likebutton pizzaId={pizza._id} /> {/* Use Likebutton here */}
               </CardActions>
             </Card>
           </Grid>
