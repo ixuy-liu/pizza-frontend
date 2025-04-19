@@ -5,19 +5,19 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-<<<<<<< HEAD
-=======
     "@hookform/resolvers": "^5.0.1",
     "@mui/icons-material": "^7.0.2",
     "@mui/lab": "^7.0.0-beta.11",
->>>>>>> b02b34ec60586f79b2c1f15d5099a70980d1eae7
     "@mui/material": "^7.0.2",
+    "@tanstack/react-query": "^5.74.4",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.8.4",
     "bootstrap": "^5.3.5",
     "framer-motion": "^12.7.4",
+    "gsap": "^3.12.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.55.0",
